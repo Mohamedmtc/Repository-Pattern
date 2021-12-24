@@ -18,7 +18,7 @@ Benefits of the repository pattern
     3- we can also modify and extend entities inside the repository before they are passed back to our consumer
     4- a shareable abstraction, resulting in less duplication of code
 
-Example on Generic repository
+# Example on Generic repository
 
 we will apply the generic repository to decouple the controller from the data layer And in order for us to do that, we're first going to introduce the interface of a repository. a repository is in charge of all the crud operations, which is create, read, update and delete. Our repository is going to allow us to add an entity it's going to allow us to update on the entity, and it's going to allow us to retrieve a particular entity. Based on the identifiers I also want a way for us to retrieve all the items as well as find a particular item based on some search criteria. This parameter passed to our fine function known as the predicate, will be an expression that will evaluate if a particular item should be returned or not from the underlying data store. And of course, we also want to be able to save the changes that we might have done to our different entities. So this here is the interface that our controller is now going to be working with instead of directly communicating with our data access layer,
 ```CSharp
@@ -81,7 +81,7 @@ public abstract class GenericRepository<T>
         }
     }
 ```
-Extend our repository
+# Extend our repository
 
 let's proceed to add on implementation for a particular entity that's based on our generic repository. We're going to start off with our product repository. This is going to inherit from our generic repository, and this particular repository will now work with our product entity. This means that we need to pass our shopping context into our product repository, which is then passed on to the base class, which is our generic repository. Now, we just out of the box got all the methods for adding updating, getting, finding, and saving the changes for a product. So one of the things that I want to implement in the concrete implementations of our generic repository is I want to override how we update the products because I wanna make sure that we can first find the particular product and then simply change the values that we have approved to change in the repository
 
@@ -104,7 +104,7 @@ public class ProductRepository : GenericRepository<Product>
         }
     }
 ```
-Consuming a Repository
+# Consuming a Repository
 
 we have the interface that represents the way that we communicate with a repository. Our controller can use this in order free to know how to grab data without having to care about how the data is represented. If we're using in hibernate entity framework or storing this to a file on disk, the consumer no longer has to know anything about the underlying data structure. We then introduce the generic repository that allows us to generically work with our data context to reduce the amount of duplication of code inside our concrete implementations off our repositories. So now let's go ahead and go to our Web application and refactor this to make use of our repositories. We're going to proceed to go into our Product controller where we using DI to load the productRepository of type IRepository<Product>
 
@@ -142,7 +142,7 @@ public void ConfigureServices(IServiceCollection services)
             services.AddTransient<IRepository<Product>, ProductRepository>();
         })
 ```
-the outcomes
+# the outcomes
 
     1- code for accessing data can now be shared
     2- data access in encapsulated
